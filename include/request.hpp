@@ -1,6 +1,8 @@
 #pragma once
 
 #include <cstddef>
+#include <cstdint>
+#include <string>
 #include <vector>
 namespace Socket {
     class Request{
@@ -11,5 +13,7 @@ namespace Socket {
         public:
             Request(int client_fd,char* buffer, std::size_t size);
             std::vector<char> getRawData();
+            void operator<<(std::uint64_t x);
+            void operator<<(std::string x);
     };
 }

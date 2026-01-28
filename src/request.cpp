@@ -16,3 +16,18 @@ std::vector<char> Socket::Request::getRawData(){
     }
      return data;  
 }
+
+void Socket::Request::operator<<(std::uint64_t x){
+    char buff[8];
+    std::uint64_t cache = x;
+    for(int i = 0;i < 8;i++){
+         buff[i] = cache & 0xFF;
+         cache = cache >> 8;
+    }
+
+    send(client, &buff, 8, 0);
+}
+
+void Socket::Request::operator<<(std::string x){
+    send(client, x.c_str(), x.size(), 0);
+}
