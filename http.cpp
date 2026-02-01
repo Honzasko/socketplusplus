@@ -1,7 +1,5 @@
 #include "http.hpp"
-#include <iostream>
 #include <string>
-#include <vector>
 #include <request.hpp>
 
 void Http::onRequest(Socket::Request* req){
