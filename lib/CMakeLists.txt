@@ -6,7 +6,7 @@ project(socketpluplus)
 add_library(socketplusplus SHARED 
     src/server.cpp 
     src/request.cpp  
-    src/scheduler.cpp
+    src/scheduler/multireactor.cpp
 )
 
  target_include_directories(socketplusplus PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)

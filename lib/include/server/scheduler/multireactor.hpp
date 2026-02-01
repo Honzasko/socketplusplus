@@ -2,24 +2,26 @@
 #include <thread>
 #include <vector>
 #include "RequestHandler.hpp"
+#include "server/scheduler.hpp"
 
-namespace Socket {
+namespace Schedulers {
 
     typedef struct {
         int fd;
         RequestHandler* handler;
     }SchedulerClient;
 
-    class Scheduler {
+    class Multireactor : public Socket::Scheduler{
         private:
             int nproc;
             std::vector<std::thread> threads; 
             std::vector<int> workerPool;
             void task(int key);
             std::vector<int> workers;
-            void clean(SchedulerClient* client,int worker);
+            void clean(Socket::SchedulerClient* client,int worker);
+            void processClient(Socket::SchedulerClient* client,int key);
         public:
-            Scheduler();
-            void addClient(SchedulerClient client);
+            Multireactor();
+            void addClient(Socket::SchedulerClient client);
     };
 }

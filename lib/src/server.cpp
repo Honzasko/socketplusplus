@@ -1,4 +1,4 @@
-#include "../include/server.hpp"
+#include "server/server.hpp"
 #include <arpa/inet.h>
 #include <cstdio>
 #include <netinet/in.h>
@@ -8,7 +8,8 @@
 #include <unistd.h>
 #include "../include/RequestHandler.hpp"
 #include <functional>
-#include "../include/scheduler.hpp"
+#include "server/scheduler.hpp"
+#include <server/scheduler/multireactor.hpp>  
 
 Socket::Server::Server(int port, char type,char IP){
     ipv6 = false;
