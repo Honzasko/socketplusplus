@@ -1,18 +1,15 @@
 #pragma once
 #include <thread>
+#include <unordered_map>
 #include <vector>
-#include "RequestHandler.hpp"
 #include "server/scheduler.hpp"
+#include <string>
 
 namespace Schedulers {
 
-    typedef struct {
-        int fd;
-        RequestHandler* handler;
-    }SchedulerClient;
-
     class Multireactor : public Socket::Scheduler{
         private:
+            std::unordered_map<std::string, std::string> cache;
             int nproc;
             std::vector<std::thread> threads; 
             std::vector<int> workerPool;

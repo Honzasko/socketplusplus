@@ -9,4 +9,8 @@ add_library(socketplusplus SHARED
     src/scheduler/multireactor.cpp
 )
 
+if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+    target_compile_options(socketplusplus PRIVATE -march=native -O2)
+endif()
+
  target_include_directories(socketplusplus PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)

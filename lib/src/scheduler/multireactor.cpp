@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <cerrno>
 #include <iterator>
+#include <string>
 #include <sys/types.h>
 #include <vector>
 #include <thread>
@@ -47,8 +48,17 @@ void Schedulers::Multireactor::processClient(Socket::SchedulerClient* client, in
         }
     else {
         data.resize(data_len);
-        Socket::Request req(client->fd,data.data(),data_len);
-        client->handler->onRequest(&req);
+        std::string in(data.begin(),data.end());
+        auto it = cache.find(in);
+        if(it == cache.end()){
+            Socket::Request req(client->fd,data.data(),data_len);
+            client->handler->onRequest(&req);
+            cache[in] = std::string(req.out_buff.begin(),req.out_buff.end());
+        }else {
+            std::string out = cache[in];
+            send(client->fd, out.c_str(), out.size(), 0);
+        }
+        
     }
 }
 
@@ -87,7 +97,7 @@ void Schedulers::Multireactor::task(int key){
 void Schedulers::Multireactor::addClient(Socket::SchedulerClient client){
      auto in = std::min_element(workerPool.begin(),workerPool.end());
      int smallest = std::distance(workerPool.begin(),in);
-     SchedulerClient* c = new SchedulerClient;
+     Socket::SchedulerClient* c = new Socket::SchedulerClient;
      c->fd = client.fd;
      c->handler = client.handler;
 
